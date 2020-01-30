@@ -13,7 +13,7 @@ test('Login with valid credentials', async t =>{
     await t.expect(await navigationBar.isPageDisplayed()).notOk();
 });
 
-test.only('Login with invalid password', async t =>{
+test('Login with invalid password', async t =>{
     await navigationBar.clickOnLoginButton();
     await loginPage.login(EMAIL_ADDRESS,INVALID_PASSWORD);
     await t.expect(await loginPage.getErrorMessage()).eql('Wrong email or password.');

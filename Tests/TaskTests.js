@@ -17,7 +17,7 @@ test('Create a new Task',async t=>{
 
 test.only('Create 10 tasks', async t=>{
     var randomTaskName;
-    for (var i=0; i<3;i++){
+    for (var i=0; i<10;i++){
         randomTaskName = Math.random().toString();
         await todayPage.addTaskUsingPredefinedDate(randomTaskName);
         await t.expect(todayPage.lblTaskName.withText(randomTaskName).exists).ok();

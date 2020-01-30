@@ -1,0 +1,1408 @@
+{
+	"info": {
+		"_postman_id": "3fd297cc-a5e3-4239-b36c-3f344c97dcb2",
+		"name": "Todoist",
+		"description": "QA Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "Create a new Project",
+					"item": [
+						{
+							"name": "Create a new Project",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4a49e974-cd3a-4a3d-bc0a-957ae2e55d7e",
+										"exec": [
+											"var data = pm.response.json();//JSON.parse(responseBody);",
+											"",
+											"pm.environment.set(\"projectID\", data.id);",
+											"",
+											"pm.test(\"Body matches content\", function () {",
+											"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"projectName\"));",
+											"});",
+											"",
+											"pm.test(\"Body matches content\", function () {",
+											"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"projectName\"));",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{projectName}}\"\n}"
+								},
+								"url": {
+									"raw": "https://api.todoist.com/rest/v1/projects",
+									"protocol": "https",
+									"host": [
+										"api",
+										"todoist",
+										"com"
+									],
+									"path": [
+										"rest",
+										"v1",
+										"projects"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new Project with incorrect name data type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4a49e974-cd3a-4a3d-bc0a-957ae2e55d7e",
+										"exec": [
+											"pm.environment.set(\"envSkipProjectSchemaTest\",\"false\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"false\");",
+											"",
+											"pm.test(\"Status code is Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"pm.test(\"Response contains an error\", function () {",
+											"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"jsonError\"));",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "ee8e5e28-e06a-43be-858e-6063e918c806",
+										"exec": [
+											"pm.environment.set(\"envSkipProjectSchemaTest\",\"true\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-Id",
+										"type": "text",
+										"value": "$(uuidgen)"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": 4616000121\n}"
+								},
+								"url": {
+									"raw": "https://api.todoist.com/rest/v1/projects",
+									"protocol": "https",
+									"host": [
+										"api",
+										"todoist",
+										"com"
+									],
+									"path": [
+										"rest",
+										"v1",
+										"projects"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get a Project",
+					"item": [
+						{
+							"name": "Get a Project",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "456b795d-3ccb-4c65-a10b-8b7bb471c37a",
+										"exec": [
+											"pm.test(\"Project retreived successfully\", function () {",
+											"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"projectID\"));",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{projectURL}}/{{projectID}}",
+									"host": [
+										"{{projectURL}}"
+									],
+									"path": [
+										"{{projectID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a non existing Project",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "456b795d-3ccb-4c65-a10b-8b7bb471c37a",
+										"exec": [
+											"pm.environment.set(\"envSkipProjectSchemaTest\",\"false\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"false\");",
+											"pm.test(\"Status code is 404 - Not Found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"pm.test(\"Response has error message\", function () {",
+											"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"404Error\"));",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "18453d21-8086-42e8-b729-0902af1d1e4f",
+										"exec": [
+											"pm.environment.set(\"envSkipProjectSchemaTest\",\"true\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{projectURL}}/03",
+									"host": [
+										"{{projectURL}}"
+									],
+									"path": [
+										"03"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all Projects",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "88184c19-a1f8-4baf-a0e7-cf682f4cd29c",
+										"exec": [
+											"pm.test(\"Response matches content\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"Inbox\");",
+											"});",
+											"",
+											"pm.test(\"Response matches content\", function () {",
+											"    pm.expect(pm.response.text()).to.not.include(\"Jalpilla\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{projectURL}}",
+									"host": [
+										"{{projectURL}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Update a Project",
+					"item": [
+						{
+							"name": "Update a Project",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d6a582ff-f9cb-48c1-8319-760813e23e31",
+										"exec": [
+											"pm.environment.set(\"envSkipProjectSchemaTest\",\"false\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "fa941d87-6668-445f-a34c-48b8650e55da",
+										"exec": [
+											"pm.environment.set(\"envSkipProjectSchemaTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"QA Challenge Udate\"\n}"
+								},
+								"url": {
+									"raw": "{{projectURL}}/{{projectID}}",
+									"host": [
+										"{{projectURL}}"
+									],
+									"path": [
+										"{{projectID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a non existing Project",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d6a582ff-f9cb-48c1-8319-760813e23e31",
+										"exec": [
+											"pm.environment.set(\"envSkipProjectSchemaTest\",\"false\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"false\");",
+											"",
+											"pm.test(\"Status code is Error\", function () {",
+											"    pm.response.to.be.error;",
+											"});",
+											"pm.test(\"Response has error message\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"Project not found\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "fa941d87-6668-445f-a34c-48b8650e55da",
+										"exec": [
+											"pm.environment.set(\"envSkipProjectSchemaTest\",\"true\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-Id",
+										"type": "text",
+										"value": "$(uuidgen)"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"QA Challenge Udate\"\n}"
+								},
+								"url": {
+									"raw": "{{projectURL}}/{{projectInvalidID}}",
+									"host": [
+										"{{projectURL}}"
+									],
+									"path": [
+										"{{projectInvalidID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Delete a Project",
+					"item": [
+						{
+							"name": "Delete a Project",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "7af1b5fd-07d5-4ff6-8ac5-3b20b6e0889e",
+										"exec": [
+											"pm.environment.set(\"envSkipProjectSchemaTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "677cd0f5-8355-4110-b036-ccaff77f3713",
+										"exec": [
+											"pm.environment.set(\"envSkipProjectSchemaTest\",\"false\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{projectURL}}/{{projectID}}",
+									"host": [
+										"{{projectURL}}"
+									],
+									"path": [
+										"{{projectID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a non existing Project",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "27c85bdb-c68f-4d5b-8efd-65770b6d4df5",
+										"exec": [
+											"pm.environment.set(\"envSkipProjectSchemaTest\",\"true\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "6e083d7c-fa1e-4ef4-8854-e3299f216c3e",
+										"exec": [
+											"pm.environment.set(\"envSkipProjectSchemaTest\",\"false\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"false\");",
+											"",
+											"pm.test(\"Status code is Error\", function () {",
+											"    pm.response.to.be.error;",
+											"});",
+											"pm.test(\"Response has error message\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"not found\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{projectURL}}/thisDoesNotExist",
+									"host": [
+										"{{projectURL}}"
+									],
+									"path": [
+										"thisDoesNotExist"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2a913bfc-f056-4ce4-9d58-4fddcf218730",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0778daec-8316-45f5-9c24-3bf4a0269a7e",
+						"type": "text/javascript",
+						"exec": [
+							"let skipProjectSchemaTest = pm.environment.get(\"envSkipProjectSchemaTest\") === \"true\";",
+							"",
+							"(skipProjectSchemaTest ? pm.test.skip : pm.test)(\"Project Schema is Valid\", function(){",
+							"    pm.expect(tv4.validate(pm.response.json(),pm.environment.get(\"projectSchema\"))).to.be.ok;",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Create a New Task",
+					"item": [
+						{
+							"name": "Create a New Task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ad753e98-e1ed-4e47-a6c1-31872cf37ac0",
+										"exec": [
+											"var data = pm.response.json();//JSON.parse(responseBody);",
+											"pm.environment.set(\"taskID\", data.id);",
+											"pm.test(\"Response contains the new task details\", function () {",
+											"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"taskName\"));",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\t\"project_id\": {{projectIDForTask}},\n\t\t\"section_id\": 0,\n\t\t\"order\": 2,\n\t\t\"content\": \"{{taskName}}\",\n\t\t\"completed\": false,\n\t\t\"label_ids\": [],\n\t\t\"priority\": {{taskPriority}},\n\t\t\"comment_count\": 0,\n    \t\"due_string\": \"{{taskDueString}}\",\n    \t\"due_lang\": \"{{taskDueLang}}\"\n}"
+								},
+								"url": {
+									"raw": "{{taskURL}}",
+									"host": [
+										"{{taskURL}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a New Task witn an Invalid priority",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ad753e98-e1ed-4e47-a6c1-31872cf37ac0",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"false\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"false\");",
+											"pm.test(\"Status code is Error\", function () {",
+											"    pm.response.to.be.error;",
+											"});",
+											"pm.test(\"Response contains an error\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"Unsupported priority value\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "4c0d9243-d4b2-4902-a2dd-c95642ab8d5c",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"true\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									},
+									{
+										"key": "X-Requested-Id",
+										"type": "text",
+										"value": "$(uuidgen)"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\t\"project_id\": {{projectIDForTask}},\n\t\t\"section_id\": 0,\n\t\t\"order\": 2,\n\t\t\"content\": \"{{taskName}}\",\n\t\t\"completed\": false,\n\t\t\"label_ids\": [],\n\t\t\"priority\": 8,\n\t\t\"comment_count\": 0,\n    \t\"due_string\": \"{{taskDueString}}\",\n    \t\"due_lang\": \"{{taskDueLang}}\"\n}"
+								},
+								"url": {
+									"raw": "{{taskURL}}",
+									"host": [
+										"{{taskURL}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Update a Task",
+					"item": [
+						{
+							"name": "Update a Task - due_string",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6931c234-1353-4878-ad00-9bfa14c8ced8",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"false\");",
+											"pm.test(\"Response is empty\", function () {",
+											"    pm.expect(pm.response.text()).to.be.empty;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "75ecae60-0027-4608-9e48-ba242180235e",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\t\"project_id\": {{projectIDForTask}},\n\t\t\"section_id\": 0,\n\t\t\"order\": 2,\n\t\t\"content\": \"New QA Challenge Task updates\",\n\t\t\"completed\": false,\n\t\t\"label_ids\": [],\n\t\t\"priority\": {{taskPriority}},\n\t\t\"comment_count\": 0,\n\t    \"due_string\": \"Tomorrow 19:00\",\n    \t\"due_lang\": \"{{taskDueLang}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{taskURL}}/{{taskID}}",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a Task with an Invalid Priority",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6931c234-1353-4878-ad00-9bfa14c8ced8",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"false\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"false\");",
+											"pm.test(\"Status code is Error\", function () {",
+											"    pm.response.to.be.error;",
+											"});",
+											"pm.test(\"Response contains an error\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"Unsupported priority value\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "837f8374-f41b-4e47-a85d-d29f1a376d5f",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"true\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\t\"project_id\": {{projectIDForTask}},\n\t\t\"section_id\": 0,\n\t\t\"order\": 2,\n\t\t\"content\": \"New QA Challenge Task updates\",\n\t\t\"completed\": false,\n\t\t\"label_ids\": [],\n\t\t\"priority\": 8,\n\t\t\"comment_count\": 0,\n\t    \"due_string\": \"Tomorrow 19:00\",\n    \t\"due_lang\": \"{{taskDueLang}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{taskURL}}/{{taskID}}",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a Task - due_date",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "5eb8f5ba-70a8-437c-8881-1e03bcaf349d",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "45c447e1-116a-46bb-98fa-9cb155b0d1e9",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"false\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\t\"project_id\": {{projectIDForTask}},\n\t\t\"section_id\": 0,\n\t\t\"order\": 2,\n\t\t\"content\": \"New QA Challenge Task updates\",\n\t\t\"completed\": false,\n\t\t\"label_ids\": [],\n\t\t\"priority\": {{taskPriority}},\n\t\t\"comment_count\": 0,\n\t\t\"due_date\": \"2025-09-25\",\n    \t\"due_lang\": \"{{taskDueLang}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{taskURL}}/{{taskID}}",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a Task - due_datetime",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "a370a8e5-3d3c-4dc2-902e-e460ce12c1f6",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a8bb0596-09ad-4053-88f2-04559b785ac9",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"false\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\t\"project_id\": {{projectIDForTask}},\n\t\t\"section_id\": 0,\n\t\t\"order\": 2,\n\t\t\"content\": \"New QA Challenge Task updates\",\n\t\t\"completed\": false,\n\t\t\"label_ids\": [],\n\t\t\"priority\": {{taskPriority}},\n\t\t\"comment_count\": 0,\n\t\t\"due_datetime\": \"2025-09-19T01:00:00Z\",\n    \t\"due_lang\": \"{{taskDueLang}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{taskURL}}/{{taskID}}",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get Active Tasks",
+					"item": [
+						{
+							"name": "Get Active Tasks",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4448f969-51ac-49d2-be0a-8240eb9f9074",
+										"exec": [
+											"pm.test(\"Task or tasks received successfuly\", function () {",
+											"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"taskID\"));",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}",
+									"host": [
+										"{{taskURL}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get an active Task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "68264f61-3273-4c34-8855-18075633175f",
+										"exec": [
+											"pm.test(\"Task or tasks received successfuly\", function () {",
+											"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"taskID\"));",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}/{{taskID}}",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a non existing Task",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e1c9dad1-d1c0-45be-ac15-f16270573610",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"true\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "4d986a62-965d-49e1-8c27-81e9136d8303",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"false\");",
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"false\");",
+											"",
+											"pm.test(\"Status code is 404 - Not Found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Response has error message\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"Not Found\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}/{{taskInvalidID}}",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskInvalidID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "19c1170f-fdfd-4489-8f41-2cae6a9102d0",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec287311-8cad-4c70-8b24-132f85b65dd9",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Close a Task",
+					"item": [
+						{
+							"name": "Close a Task",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1279fdf9-61d8-406e-a6c6-a5bf75a93e8e",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "3cfd23bb-43c9-44a3-950a-6fa7553ff4a9",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}/{{taskID}}/close",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskID}}",
+										"close"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Close a non existing Task",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "13c62e5f-8938-4412-a04c-2aceb24472e8",
+										"exec": [
+											"pm.environment.set(\"envSkipTaskSchemaTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "45378329-f36a-452b-ac66-ac5831aa8965",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}/{{taskInvalidID}}/close",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskInvalidID}}",
+										"close"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6450835b-f026-4668-b873-f4246dbc713e",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"envSkipTaskSchemaTest\",\"true\");"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "7335c0c6-e068-49f4-9f3a-03e78991adf0",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"envSkipTaskSchemaTest\",\"false\");",
+									"pm.test(\"Response is empty\", function () {",
+									"    pm.expect(pm.response.text()).to.be.empty;",
+									"});"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Reopen a Task",
+					"item": [
+						{
+							"name": "Reopen a Task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a700a4e7-c61c-4a3d-b588-4be35ed9cafa",
+										"exec": [
+											"pm.test(\"Response is empty\", function () {",
+											"    pm.expect(pm.response.text()).to.be.empty;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}/{{taskID}}/reopen",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskID}}",
+										"reopen"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reopen a non existing Task",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "41187e57-ac08-4a0c-b2db-6c4450be0329",
+										"exec": [
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "47bb3c62-e56e-4424-8e14-b3018b7c31c2",
+										"exec": [
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"false\");",
+											"pm.test(\"Response contains an error\", function () {",
+											"    pm.response.to.be.error;",
+											"});",
+											"pm.test(\"Response contains error description\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"Item not found\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}/{{taskInvalidID}}/reopen",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskInvalidID}}",
+										"reopen"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "febabe9d-1353-42d6-b564-df6110ce335f",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"envSkipTaskSchemaTest\",\"true\");"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "546e8795-fe73-4e33-940c-344b366aad50",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"envSkipTaskSchemaTest\",\"false\");",
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Delete a Task",
+					"item": [
+						{
+							"name": "Delete a Task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "1339efcb-a7ce-4066-a4da-28f07b9ca3c5",
+										"exec": [
+											"pm.test(\"Response is empty\", function () {",
+											"    pm.expect(pm.response.text()).to.be.empty;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}/{{taskID}}",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a Non Existing Task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "1339efcb-a7ce-4066-a4da-28f07b9ca3c5",
+										"exec": [
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"false\");",
+											"pm.test(\"Response status is error\", function () {",
+											"    pm.response.to.be.error;",
+											"});",
+											"pm.test(\"Response contains an error description\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"Item not found\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "dc7d3278-3118-48b4-846b-e1f2783b5d09",
+										"exec": [
+											"pm.environment.set(\"envSkipStatusCodeTest\",\"true\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}/{{taskInvalidID}}",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskInvalidID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4c780458-5d08-4389-85f2-ed95d203105a",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"envSkipTaskSchemaTest\",\"true\");"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "be0519db-30cc-42cc-af3f-6468fa2d3f7b",
+								"type": "text/javascript",
+								"exec": [
+									"pm.environment.set(\"envSkipTaskSchemaTest\",\"false\");"
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4389d719-8860-49c6-b11a-52d3d7201448",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e401cb15-d621-4dbf-8959-eec851fee2ae",
+						"type": "text/javascript",
+						"exec": [
+							"let skipTaskSchemaTest = pm.environment.get(\"envSkipTaskSchemaTest\") === \"true\";",
+							"",
+							"(skipTaskSchemaTest ? pm.test.skip : pm.test)(\"Task Schema is Valid\", function(){",
+							"    pm.expect(tv4.validate(pm.response.json(),pm.environment.get(\"taskSchema\"))).to.be.ok;",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ccd2d500-8db7-4690-abd1-13c264ab0aa6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "011b40d4-1f8c-4959-a50a-b638d4e2bacd",
+				"type": "text/javascript",
+				"exec": [
+					"let skipStatusCodeTest = pm.environment.get(\"envSkipStatusCodeTest\") === \"true\";",
+					"",
+					"(skipStatusCodeTest ? pm.test.skip : pm.test)(`Status code is ${pm.response.code}`, function () {",
+					"    pm.response.to.be.success;",
+					"});",
+					"pm.test(\"Response time is less than 500ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(500);",
+					"});"
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,25 @@
+{
+  "name": "todoist",
+  "version": "1.0.0",
+  "description": "QA Buddy Program Challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "testcafe chrome ./Tests",
+    "test:browserStack": "BROWSERSTACK_USERNAME='marcoolivares2' BROWSERSTACK_ACCESS_KEY='1UmesbqTAapo6pVizZGu' testcafe 'browserstack:Chrome@79.0:Windows 10' ./Tests/TaskTests.js"
+  },
+  "keywords": [
+    "QA",
+    "TestCafe",
+    "Buddy",
+    "Program",
+    "Challenge"
+  ],
+  "author": "Marco Olivares",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^6.8.0",
+    "testcafe": "^1.8.0",
+    "testcafe-browser-provider-browserstack": "^1.11.0"
+  }
+}

@@ -335,7 +335,7 @@
 											"pm.environment.set(\"envSkipProjectSchemaTest\",\"false\");",
 											"pm.environment.set(\"envSkipStatusCodeTest\",\"false\");",
 											"",
-											"pm.test(\"Status code is Error\", function () {",
+											"pm.test(\"Response Status code is Error\", function () {",
 											"    pm.response.to.be.error;",
 											"});",
 											"pm.test(\"Response has error message\", function () {",

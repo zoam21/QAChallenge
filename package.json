@@ -6,7 +6,7 @@
   "scripts": {
     "test": "testcafe chrome:headless ./Tests",
     "test:browserStack": "BROWSERSTACK_USERNAME='marcoolivares2' BROWSERSTACK_ACCESS_KEY='1UmesbqTAapo6pVizZGu' testcafe 'browserstack:Chrome@79.0:Windows 10' ./Tests/TaskTests.js",
-    "test:slack":"TESTCAFE_SLACK_WEBHOOK=https://hooks.slack.com/services/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 node_modules/.bin/testcafe chrome:headless ./Tests -r slack"
+    "test:slack":"TESTCAFE_SLACK_WEBHOOK='https://hooks.slack.com/services/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' node_modules/.bin/testcafe chrome:headless ./Tests -r slack"
   },
   "keywords": [
     "QA",

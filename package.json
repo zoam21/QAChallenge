@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "testcafe chrome ./Tests",
-    "test:browserStack": "BROWSERSTACK_USERNAME='marcoolivares2' BROWSERSTACK_ACCESS_KEY='1UmesbqTAapo6pVizZGu' testcafe 'browserstack:Chrome@79.0:Windows 10' ./Tests/TaskTests.js"
+    "test:browserStack": "BROWSERSTACK_USERNAME='marcoolivares2' BROWSERSTACK_ACCESS_KEY='1UmesbqTAapo6pVizZGu' testcafe 'browserstack:Chrome@79.0:Windows 10' ./Tests/TaskTests.js",
+    "test:slack":"TESTCAFE_SLACK_WEBHOOK='https://hooks.slack.com/services/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' node_modules/.bin/testcafe chrome ./Tests -r slack"
   },
   "keywords": [
     "QA",

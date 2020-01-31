@@ -41,21 +41,37 @@ We are going to need to have at least the following installed in our system in o
 
 # FrontEnd UI Automation Framework
 The FrontEnd UI Automation Framework was designed using the Page Object Model using the following folder structure:
+
 ./Pages
+
     LandPage -> That contains the needed elements to perform the Login divided in 2 classes
+
         LoginPage.js -> That contains everything needed to perform the login.
+        
         NavigationBar.js -> That contains everything needed to navigate throught the land page and open the Login form.
+
     MainPage -> That contains the needed elements to validate that the user is able to add new tasks, as well divided into different classes.
+
         TodayPage.js -> That contains the elements needed to add a new task.
+
         BasePage.js -> That contains some methods to interact with some elements of the pages.
+
 ./Tests
+
     Backend -> This folder will be explained into the Backend Testing section of this file.
+
     LoginTests.js -> This file holds all the test cases that were created to validate the login action.
+
     TaskTests.js -> This file holds all the test cases created to validate the Add Task function from the Today window.
+
 ./Utils -> Some helpful files
+
     Files
+
         login.env -> Contains the login details to use.
+
     Constants.js -> This file holds all the constant variables that are used for all test cases.
+    
     RoleGenerator.js -> This file holds everything that's needed to create a login role so we don't have to re-login with every single test that is not related with the login function.
 
 We need to download and install NodeJS from: https://nodejs.org/en/download/
@@ -69,5 +85,5 @@ Steps:
     4.- Execute the following command:
         $npm run test
         This command will execute all the Tests Cases and provide results on their execution.
-        
+
 # Backend Automation Framework

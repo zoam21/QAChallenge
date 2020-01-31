@@ -88,8 +88,8 @@ Steps:
 
     4.- Execute the following command:
 
-        $npm run test
-        
+                $npm run test
+
         This command will execute all the Tests Cases and provide results on their execution.
 
 # Backend Automation Framework

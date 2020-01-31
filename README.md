@@ -64,14 +64,14 @@ The FrontEnd UI Automation Framework was designed using the Page Object Model us
 
     TaskTests.js -> This file holds all the test cases created to validate the Add Task function from the Today window.
 
-./Utils -> Some helpful files
+./Utils
 
     Files
 
         login.env -> Contains the login details to use.
 
     Constants.js -> This file holds all the constant variables that are used for all test cases.
-    
+
     RoleGenerator.js -> This file holds everything that's needed to create a login role so we don't have to re-login with every single test that is not related with the login function.
 
 We need to download and install NodeJS from: https://nodejs.org/en/download/
@@ -79,11 +79,18 @@ We need to download and install NodeJS from: https://nodejs.org/en/download/
 Once we have installed NodeJS in our system, we can execute the designed tests as follows:
 
 Steps:
+
     1.- Download or clone the contents of this repository into a local folder.
+
     2.- Open a Terminal Window.
+
     3.- In Terminal, open the Folder where the contents of the repository are saved.
+
     4.- Execute the following command:
+
         $npm run test
+        
         This command will execute all the Tests Cases and provide results on their execution.
 
 # Backend Automation Framework
+The backend automation framework was designed using Postman and in order 

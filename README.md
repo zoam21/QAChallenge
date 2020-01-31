@@ -1,10 +1,10 @@
 # QA Challenge
-This repository contains 2 different automation frameworks that were design from scratch using Visual Studio Code in Mac OS for the the QA Buddy Program proposed in the following URL: https://github.com/wizeline/qa-buddy-program .
+This repository contains 2 different automation frameworks that were design from scratch using Visual Studio Code in MacOS for the the QA Buddy Program described in the following URL: https://github.com/wizeline/qa-buddy-program using Todoist(https://todoist.com/) as practice subject.
 
 In the following sections the solution will be described and how you can execute the BackEnd and FrontEnd tests using the designed frameworks.
 
 # Problem to Solve
-Create new Automation Frameworks that can be implemented to test the FrontEnd (UI) and Backend in order to test the following for Todoist (https://todoist.com/):
+Create new Automation Frameworks that can be implemented to test the FrontEnd (UI) and Backend in order to test the following for Todoist:
 
 - FrontEnd:
 * Test the Login form
@@ -93,4 +93,10 @@ Steps:
         This command will execute all the Tests Cases and provide results on their execution.
 
 # Backend Automation Framework
-The backend automation framework was designed using Postman and in order 
+The backend automation framework was designed using Postman and in order to execute the TestCases we need to have installed a tool called Newman (https://learning.getpostman.com/docs/postman/collection-runs/command-line-integration-with-newman/).
+
+After newman is installed in your system you can execute the tests using the following command:
+
+        $newman run ./Tests/Backend/Todoist.postman_collection.json -e ./Tests/Backend/QA.postman_environment.json
+
+You will get the test results after each test case gets executed.

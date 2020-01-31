@@ -99,4 +99,4 @@ After newman is installed in your system you can execute the tests using the fol
 
         $newman run ./Tests/Backend/Todoist.postman_collection.json -e ./Tests/Backend/QA.postman_environment.json
 
-You will get the test results after each test case gets executed.
+You will get the test results after each test case gets executed. Here we are testing the scenarios mentioned above along with some negative ones to ensure the quality of the product. Some tests are skipped because they don't apply for some specific scenarios.

@@ -31,7 +31,7 @@ Create new Automation Frameworks that can be implemented to test the FrontEnd (U
 
 For the front end TestCafé was used since it is powerful, easy to use and light to execute. For the backend we used the API exposed by the client (Todoist) and Postman to create the Requests and TestCases.
 
-# Requirements to run the Frameworks
+# Requirements/Dependencies to run the Frameworks
 We are going to need to have at least the following installed in our system in order to proceed.
 
 * NodeJS
